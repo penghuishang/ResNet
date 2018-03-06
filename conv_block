@@ -1,0 +1,20 @@
+def conv_block(x,nb_filter,kernel_size=3):
+    k1,k2,k3 = nb_filter
+
+    out = Convolution1D(k1,1)(x)
+    out = BatchNormalization()(out)
+    out = Activation('relu')(out)
+
+    out = out = Convolution1D(k2,kernel_size,padding='same')(out)
+    out = BatchNormalization()(out)
+    out = Activation('relu')(out)
+
+    out = Convolution1D(k3,1)(out)
+    out = BatchNormalization()(out)
+
+    x = Convolution1D(k3,1)(x)
+    x = BatchNormalization()(x)
+
+    out = merge([out,x],mode='sum')
+    out = Activation('relu')(out)
+    return out
